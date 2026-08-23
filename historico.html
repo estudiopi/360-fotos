@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Pi. — Histórico de capturas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #0a0a0b;
+    --black-line: rgba(241, 239, 234, 0.1);
+    --cream: #f1efea;
+    --indigo: #3d2fe8;
+    --white: #ffffff;
+    --muted-on-black: #8a8a93;
+    --muted-on-cream: #6b6b74;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--black); color: var(--white); min-height: 100%; }
+  body { font-family: 'Space Grotesk', sans-serif; display: flex; flex-direction: column; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px clamp(20px, 5vw, 56px);
+    border-bottom: 1px solid var(--black-line);
+  }
+  .logo { display: flex; align-items: baseline; gap: 8px; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; }
+  .logo .pi-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--muted-on-black); }
+  a.back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted-on-black);
+    text-decoration: none;
+    border: 1px solid var(--black-line);
+    padding: 7px 14px;
+    border-radius: 3px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  a.back:hover { border-color: var(--indigo); color: var(--white); }
+
+  main {
+    flex: 1;
+    padding: clamp(40px, 7vh, 72px) clamp(20px, 6vw, 56px) 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--indigo);
+    margin-bottom: 16px;
+  }
+  h1 { font-size: clamp(28px, 4.2vw, 42px); font-weight: 600; letter-spacing: -0.01em; }
+  .subtext {
+    margin-top: 14px;
+    color: var(--muted-on-black);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    max-width: 52ch;
+    line-height: 1.7;
+  }
+
+  .timeline { margin-top: 48px; display: flex; flex-direction: column; }
+
+  .entry {
+    display: flex;
+    align-items: stretch;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .entry-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 28px;
+    flex-shrink: 0;
+  }
+  .entry-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--indigo); margin-top: 30px; flex-shrink: 0; }
+  .entry-line { width: 1px; flex: 1; background: var(--black-line); }
+  .entry:last-child .entry-line { display: none; }
+
+  .entry-card {
+    flex: 1;
+    background: var(--cream);
+    color: var(--black);
+    border-radius: 4px;
+    padding: 22px 24px;
+    margin: 0 0 16px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .entry:hover .entry-card, .entry:focus-visible .entry-card {
+    transform: translateX(4px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.3);
+  }
+  .entry:focus-visible .entry-card { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+  .entry-date-block { display: flex; flex-direction: column; gap: 4px; }
+  .entry-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    display: none;
+  }
+  .entry-badge.show { display: block; }
+  .entry-date { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .entry-note { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted-on-cream); }
+
+  .entry-cta { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--indigo); white-space: nowrap; }
+
+  .empty {
+    margin-top: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-on-black);
+  }
+
+  footer {
+    padding: 22px clamp(20px, 5vw, 56px) 28px;
+    border-top: 1px solid var(--black-line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted-on-black);
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Pi.<span class="pi-tag">π 3.14</span></div>
+    <a class="back" href="index.html">← Locais</a>
+  </header>
+
+  <main>
+    <div class="eyebrow">[ HISTÓRICO DE CAPTURAS ]</div>
+    <h1 id="cidade-titulo">—</h1>
+    <p class="subtext">Cada ponto abaixo é uma visita do drone nesse local. Clique numa data pra abrir o panorama 360° daquele dia.</p>
+
+    <div class="timeline" id="timeline"></div>
+    <div class="empty" id="empty" style="display:none">Nenhuma captura registrada ainda pra esse local.</div>
+  </main>
+
+  <footer>Estúdio Pi © 2026 · Registro aéreo 360°</footer>
+
+  <script>
+    // ────────────────────────────────────────────────────────────
+    // Pra adicionar uma nova captura: acrescente um objeto no array
+    // da cidade correspondente. "data" tem que bater exatamente com
+    // o nome do arquivo da foto: {Cidade}-{data}-360.jpg
+    // Ex: data "2026-03-15" com cidade "Londrina" espera o arquivo
+    //     Londrina-2026-03-15-360.jpg na mesma pasta do site.
+    // ────────────────────────────────────────────────────────────
+    const historico = {
+      Londrina: [
+        { data: "2026-03-15", nota: "Início da terraplenagem" },
+        { data: "2026-06-15", nota: "Fundação concluída" },
+        { data: "2026-09-15", nota: "Estrutura em andamento" },
+      ],
+      Sapopema: [
+        { data: "2026-08-15", nota: "Primeiro registro aéreo" },
+      ],
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const cidade = params.get('cidade');
+    const timeline = document.getElementById('timeline');
+    const tituloEl = document.getElementById('cidade-titulo');
+
+    function formatarData(iso) {
+      const [ano, mes, dia] = iso.split('-');
+      const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+      return `${dia} ${meses[parseInt(mes,10)-1]} ${ano}`;
+    }
+
+    if (!cidade || !historico[cidade]) {
+      tituloEl.textContent = 'Local não encontrado';
+      document.getElementById('empty').style.display = 'block';
+    } else {
+      tituloEl.textContent = cidade;
+      document.title = 'Pi. — Histórico · ' + cidade;
+
+      const capturas = [...historico[cidade]].sort((a, b) => a.data.localeCompare(b.data));
+
+      if (capturas.length === 0) {
+        document.getElementById('empty').style.display = 'block';
+      }
+
+      capturas.forEach((captura, i) => {
+        const isUltima = i === capturas.length - 1;
+        const link = document.createElement('a');
+        link.className = 'entry';
+        link.href = `viewer.html?cidade=${encodeURIComponent(cidade)}&data=${encodeURIComponent(captura.data)}`;
+
+        link.innerHTML = `
+          <div class="entry-rail">
+            <div class="entry-dot"></div>
+            <div class="entry-line"></div>
+          </div>
+          <div class="entry-card">
+            <div class="entry-date-block">
+              <span class="entry-badge ${isUltima ? 'show' : ''}">Mais recente</span>
+              <span class="entry-date">${formatarData(captura.data)}</span>
+              <span class="entry-note">${captura.nota || ''}</span>
+            </div>
+            <span class="entry-cta">Ver panorama →</span>
+          </div>
+        `;
+        timeline.appendChild(link);
+      });
+    }
+  </script>
+
+</body>
+</html>
